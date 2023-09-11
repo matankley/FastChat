@@ -5,7 +5,7 @@ torchrun fastchat/train/train_uniner_lora.py \
     --lora_dropout 0.05 \
     --data_path hf-Universal-NER/Pile-NER-type \
     --output_dir ./checkpoints \
-    --num_train_epochs 150 \
+    --num_train_epochs 1 \
     --bf16 True \
     --per_device_train_batch_size 4 \
     --per_device_eval_batch_size 2 \
@@ -22,7 +22,7 @@ torchrun fastchat/train/train_uniner_lora.py \
     --logging_strategy "steps" \
     --logging_steps 1 \
     --tf32 True \
-    --model_max_length 2048 \
-    --q_lora False \
+    --model_max_length 1024 \
+    --q_lora True \
     --gradient_checkpointing True \
     --flash_attn False
