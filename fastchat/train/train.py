@@ -219,6 +219,7 @@ def make_supervised_data_module(
 ) -> Dict:
     """Make dataset and collator for supervised fine-tuning."""
     dataset_cls = SupervisedDataset
+    print("Loading data")
     rank0_print("Loading data...")
     if data_args.data_path.startswith("hf-"):
         from datasets import load_dataset
