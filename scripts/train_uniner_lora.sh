@@ -1,4 +1,4 @@
-torchrun fastchat/train/train_uniner_lora.py \
+python fastchat/train/train_uniner_lora.py \
     --model_name_or_path meta-llama/Llama-2-7b-hf  \
     --lora_r 8 \
     --lora_alpha 16 \
@@ -13,8 +13,7 @@ torchrun fastchat/train/train_uniner_lora.py \
     --evaluation_strategy "steps" \
     --eval_steps 100  \
     --save_strategy "steps" \
-    --save_steps 200 \
-    --save_total_limit 2 \
+    --save_steps 20 \
     --learning_rate 2e-5 \
     --weight_decay 0. \
     --warmup_ratio 0.03 \
