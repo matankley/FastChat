@@ -108,9 +108,6 @@ def train():
         lora_args,
     ) = parser.parse_args_into_dataclasses()
 
-    if training_args.flash_attn:
-        replace_llama_attn_with_flash_attn()
-
     device_map = None
     world_size = int(os.environ.get("WORLD_SIZE", 1))
     ddp = world_size != 1
@@ -181,7 +178,7 @@ def train():
     )
     tokenizer.pad_token = tokenizer.unk_token
 
-    data_module = make_supervised_data_module(tokenizer=tokenizer, data_args=data_args)
+    data_module = make_supervised_data_module(tokenizer=tokenizer, data_args=data_args, split_eval=0.1)
     # instruction_template = "USER:"
     response_template = "ASSISTANT:"  # We added context here: "\n". This is enough for this tokenizer
 

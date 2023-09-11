@@ -134,7 +134,7 @@ def preprocess(
             instruction_len = len(tokenizer(parts[0]).input_ids) - 2
 
             # Ignore the user instructions
-            target[cur_len : cur_len + instruction_len] = IGNORE_TOKEN_ID
+            target[cur_len: cur_len + instruction_len] = IGNORE_TOKEN_ID
             cur_len += turn_len
 
         target[cur_len:] = IGNORE_TOKEN_ID
@@ -215,16 +215,20 @@ class LazySupervisedDataset(Dataset):
 
 
 def make_supervised_data_module(
-    tokenizer: transformers.PreTrainedTokenizer, data_args
+    tokenizer: transformers.PreTrainedTokenizer, data_args, split_eval: Optional[float] = None
 ) -> Dict:
     """Make dataset and collator for supervised fine-tuning."""
     dataset_cls = (
         LazySupervisedDataset if data_args.lazy_preprocess else SupervisedDataset
     )
     rank0_print("Loading data...")
+    eval_json = None
     if data_args.data_path.startswith("hf-"):
         from datasets import load_dataset
         hf_dataset = load_dataset(data_args.data_path.split("hf-")[1])
+        if split_eval:
+            hf_dataset = hf_dataset.train_test_split(test_size=split_eval)
+            eval_json = hf_dataset["test"].to_list()
         train_json = hf_dataset["train"].to_list()
     else:
         train_json = json.load(open(data_args.data_path, "r"))
@@ -232,9 +236,9 @@ def make_supervised_data_module(
 
     if data_args.eval_data_path:
         eval_json = json.load(open(data_args.eval_data_path, "r"))
+
+    if eval_json:
         eval_dataset = dataset_cls(eval_json, tokenizer=tokenizer)
-    else:
-        eval_dataset = None
 
     return dict(train_dataset=train_dataset, eval_dataset=eval_dataset)
 
