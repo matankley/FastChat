@@ -33,9 +33,6 @@ from fastchat.train.train import (
     make_supervised_data_module,
 )
 from trl import SFTTrainer, DataCollatorForCompletionOnlyLM
-from fastchat.train.llama_flash_attn_monkey_patch import (
-    replace_llama_attn_with_flash_attn,
-)
 
 
 @dataclass
