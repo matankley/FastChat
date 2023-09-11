@@ -183,7 +183,7 @@ def train():
 
     data_module = make_supervised_data_module(tokenizer=tokenizer, data_args=data_args)
     # instruction_template = "USER:"
-    response_template = "ASSISTANT:"  # We added context here: "\n". This is enough for this tokenizer
+    response_template = "ASSISTANT: ["  # We added context here: "\n". This is enough for this tokenizer
 
     data_collator = DataCollatorForCompletionOnlyLM(
         response_template=response_template,
