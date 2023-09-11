@@ -227,7 +227,7 @@ def make_supervised_data_module(
         from datasets import load_dataset
         hf_dataset = load_dataset(data_args.data_path.split("hf-")[1])
         if split_eval:
-            hf_dataset = hf_dataset.train_test_split(test_size=split_eval)
+            hf_dataset = hf_dataset["train"].train_test_split(test_size=split_eval)
             eval_json = hf_dataset["test"].to_list()
         train_json = hf_dataset["train"].to_list()
     else:
