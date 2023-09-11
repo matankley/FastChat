@@ -25,4 +25,5 @@ torchrun fastchat/train/train_uniner_lora.py \
     --model_max_length 1024 \
     --q_lora True \
     --gradient_checkpointing True \
+    --lazy_preprocess True \
     --flash_attn False

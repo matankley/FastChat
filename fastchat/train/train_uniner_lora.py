@@ -198,7 +198,6 @@ def train():
         tokenizer=tokenizer,
         args=training_args,
         data_collator=data_collator,
-        dataset_text_field="text",
         **data_module
     )
 
