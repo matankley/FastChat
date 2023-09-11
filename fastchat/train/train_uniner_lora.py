@@ -193,8 +193,13 @@ def train():
         tokenizer=tokenizer
     )
 
-    trainer = SFTTrainer(
-        model=model, tokenizer=tokenizer, args=training_args, data_collator=data_collator, **data_module
+    trainer = Trainer(
+        model=model,
+        tokenizer=tokenizer,
+        args=training_args,
+        data_collator=data_collator,
+        dataset_text_field="text",
+        **data_module
     )
 
     model.config.use_cache = False
