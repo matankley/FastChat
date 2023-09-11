@@ -183,7 +183,7 @@ def train():
 
     data_module = make_supervised_data_module(tokenizer=tokenizer, data_args=data_args)
     instruction_template = "</s>USER: What describes"
-    response_template_with_context = " Assistant: ["  # We added context here: "\n". This is enough for this tokenizer
+    response_template_with_context = " ASSISTANT: ["  # We added context here: "\n". This is enough for this tokenizer
     response_template_ids = tokenizer.encode(response_template_with_context, add_special_tokens=False)[
                             2:]  # Now we have it like in the dataset texts: `[2277, 29937, 4007, 22137, 29901]`
 
