@@ -218,12 +218,14 @@ def make_supervised_data_module(
     tokenizer: transformers.PreTrainedTokenizer, data_args
 ) -> Dict:
     """Make dataset and collator for supervised fine-tuning."""
-    dataset_cls = (
-        LazySupervisedDataset if data_args.lazy_preprocess else SupervisedDataset
-    )
+    dataset_cls = SupervisedDataset
     rank0_print("Loading data...")
-
-    train_json = json.load(open(data_args.data_path, "r"))
+    if data_args.data_path.startswith("hf-"):
+        from datasets import load_dataset
+        hf_dataset = load_dataset(data_args.data_path.split("hf-")[1])
+        train_json = hf_dataset["train"].to_list()
+    else:
+        train_json = json.load(open(data_args.data_path, "r"))
     train_dataset = dataset_cls(train_json, tokenizer=tokenizer)
 
     if data_args.eval_data_path:
