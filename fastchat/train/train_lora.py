@@ -20,7 +20,7 @@ import logging
 import pathlib
 import typing
 import os
-
+from trl import DataCollatorForCompletionOnlyLM
 from deepspeed import zero
 from deepspeed.runtime.zero.partition_parameters import ZeroParamStatus
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
@@ -186,9 +186,23 @@ def train():
     )
     tokenizer.pad_token = tokenizer.unk_token
 
-    data_module = make_supervised_data_module(tokenizer=tokenizer, data_args=data_args, split_eval=training_args.split_eval)
+    data_module = make_supervised_data_module(tokenizer=tokenizer, data_args=data_args,
+                                              split_eval=training_args.split_eval)
+
+    response_template = "in the text? ASSISTANT:"
+    instruction_template = "</s> USER:"
+
+    collator = DataCollatorForCompletionOnlyLM(
+        response_template=response_template,
+        instruction_template=instruction_template,
+        tokenizer=tokenizer
+    )
     trainer = Trainer(
-        model=model, tokenizer=tokenizer, args=training_args, **data_module
+        model=model,
+        tokenizer=tokenizer,
+        args=training_args,
+        data_collator=collator,
+        **data_module
     )
 
     model.config.use_cache = False

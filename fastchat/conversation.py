@@ -340,7 +340,7 @@ register_conv_template(
         roles=("USER", "ASSISTANT"),
         sep_style=SeparatorStyle.ADD_COLON_TWO,
         sep=" ",
-        sep2="</s>",
+        sep2="</s> ",
     )
 )
 
@@ -916,6 +916,19 @@ register_conv_template(
     )
 )
 
+# ie-as-qa template
+register_conv_template(
+    Conversation(
+        name="ie_as_qa",
+        system_message="A virtual assistant answers questions from a user based on the provided text.",
+        roles=("USER", "ASSISTANT"),
+        messages=(),
+        offset=0,
+        sep_style=SeparatorStyle.ADD_COLON_TWO,
+        sep=" ",
+        sep2="</s>",
+    )
+)
 
 if __name__ == "__main__":
     print("Vicuna template:")
