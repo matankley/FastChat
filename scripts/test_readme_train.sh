@@ -1,7 +1,7 @@
 torchrun --nproc_per_node=4 --master_port=20001 fastchat/train/train_mem.py \
     --model_name_or_path ~/model_weights/llama-7b  \
     --data_path data/dummy_conversation.json \
-    --bf16 True \
+    --bf16 False \
     --output_dir output_vicuna \
     --num_train_epochs 3 \
     --per_device_train_batch_size 2 \
@@ -18,7 +18,7 @@ torchrun --nproc_per_node=4 --master_port=20001 fastchat/train/train_mem.py \
     --logging_steps 1 \
     --fsdp "full_shard auto_wrap" \
     --fsdp_transformer_layer_cls_to_wrap 'LlamaDecoderLayer' \
-    --tf32 True \
+    --tf32 False \
     --model_max_length 2048 \
     --gradient_checkpointing True \
     --lazy_preprocess True
